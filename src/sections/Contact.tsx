@@ -93,8 +93,21 @@ export default function Contact() {
           </a>
         </div>
 
+        {/* Address */}
+        <div className="contact-animate mt-8 opacity-0 flex items-start justify-center gap-3 text-left max-w-md mx-auto">
+          <svg className="w-5 h-5 text-[#C23B22] mt-0.5 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+          </svg>
+          <p className="text-[rgba(26,43,71,0.7)] text-sm leading-relaxed">
+            #19, Sy No 108/2, Mega Venture,<br />
+            Electronic City Phase 1, Kempapura,<br />
+            Begur Koppa Main Road,<br />
+            Bangalore - 560105
+          </p>
+        </div>
+
         {/* Secondary Info */}
-        <p className="contact-animate text-[rgba(26,43,71,0.6)] text-sm mt-8 opacity-0">
+        <p className="contact-animate text-[rgba(26,43,71,0.6)] text-sm mt-6 opacity-0">
           S Reddy & Brothers | M-Sand & Jelly Suppliers
         </p>
       </div>
