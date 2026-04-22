@@ -35,6 +35,7 @@ export default function Navigation({ onNavigate }: NavigationProps) {
     { label: 'Services', target: 'services' },
     { label: 'About', target: 'why-us' },
     { label: 'Contact', target: 'contact' },
+    { label: '📐 Calculators', target: 'calculators' },
   ];
 
   return (
