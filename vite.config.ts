@@ -9,6 +9,9 @@ export default defineConfig({
   plugins: [inspectAttr(), react()],
   server: {
     port: 3000,
+    host: true,
+    allowedHosts: true,
+    hmr: { host: true },
   },
   resolve: {
     alias: {

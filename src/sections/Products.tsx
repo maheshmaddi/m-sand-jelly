@@ -1,8 +1,5 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-gsap.registerPlugin(ScrollTrigger);
 
 const products = [
   {
@@ -44,181 +41,88 @@ const products = [
 
 export default function Products() {
   const sectionRef = useRef<HTMLElement>(null);
-  const headerRef = useRef<HTMLDivElement>(null);
-  const cardRef = useRef<HTMLDivElement>(null);
-  const textItemsRef = useRef<(HTMLDivElement | null)[]>([]);
-  const currentIndexRef = useRef(0);
 
   useEffect(() => {
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const section = sectionRef.current;
+    if (!section) return;
 
-    // Header reveal
-    if (headerRef.current) {
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              const label = entry.target.querySelector('.products-label');
-              const heading = entry.target.querySelector('.products-heading');
-              if (label) {
-                gsap.fromTo(label, { opacity: 0 }, { opacity: 1, duration: 0.6, ease: 'power2.out' });
-              }
-              if (heading) {
-                gsap.fromTo(
-                  heading,
-                  { opacity: 0, y: 20 },
-                  { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out', delay: 0.2 }
-                );
-              }
-              observer.unobserve(entry.target);
-            }
-          });
-        },
-        { threshold: 0.2 }
-      );
-      observer.observe(headerRef.current);
-    }
-
-    if (prefersReducedMotion) {
-      // Show all text items
-      textItemsRef.current.forEach((item) => {
-        if (item) {
-          item.style.opacity = '1';
-          item.style.transform = 'translateY(0)';
-          item.style.position = 'relative';
-        }
-      });
-      return;
-    }
-
-    // GSAP ScrollTrigger horizontal card slide
-    if (sectionRef.current && cardRef.current) {
-      const ctx = gsap.context(() => {
-        // Animate card horizontally
-        gsap.fromTo(
-          cardRef.current,
-          { x: '60vw' },
-          {
-            x: '-15vw',
-            ease: 'none',
-            scrollTrigger: {
-              trigger: sectionRef.current,
-              start: 'top top',
-              end: 'bottom bottom',
-              scrub: true,
-            },
-          }
-        );
-
-        // Track which product is active based on scroll progress
-        ScrollTrigger.create({
-          trigger: sectionRef.current,
-          start: 'top top',
-          end: 'bottom bottom',
-          onUpdate: (self) => {
-            const progress = self.progress;
-            const newIndex = Math.min(
-              Math.floor(progress * products.length),
-              products.length - 1
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const elements = entry.target.querySelectorAll('.product-card');
+            gsap.fromTo(
+              elements,
+              { opacity: 0, y: 40 },
+              { opacity: 1, y: 0, duration: 0.6, stagger: 0.12, ease: 'power2.out' }
             );
-            if (newIndex !== currentIndexRef.current) {
-              // Deactivate previous
-              const prev = textItemsRef.current[currentIndexRef.current];
-              if (prev) prev.classList.remove('product--current');
-              // Activate new
-              const next = textItemsRef.current[newIndex];
-              if (next) next.classList.add('product--current');
-              currentIndexRef.current = newIndex;
-            }
-          },
+            observer.unobserve(entry.target);
+          }
         });
-      }, sectionRef);
+      },
+      { threshold: 0.1 }
+    );
 
-      // Activate first product initially
-      const first = textItemsRef.current[0];
-      if (first) first.classList.add('product--current');
-
-      return () => ctx.revert();
-    }
+    observer.observe(section);
+    return () => observer.disconnect();
   }, []);
 
   return (
-    <section
-      id="products"
-      ref={sectionRef}
-      className="relative bg-[#F9F7F0]"
-      style={{ height: '400vh' }}
-    >
-      {/* Section Header */}
-      <div ref={headerRef} className="pt-24 pb-12 px-6 text-center max-w-[1280px] mx-auto">
-        <span className="products-label inline-block text-[#C23B22] text-xs font-semibold uppercase tracking-[0.15em] opacity-0">
-          OUR PRODUCTS
-        </span>
-        <h2 className="products-heading text-[#1A2B47] font-semibold mt-3 opacity-0" style={{ fontSize: 'clamp(1.75rem, 3vw, 2.5rem)' }}>
-          Premium Construction Materials at Competitive Prices
-        </h2>
-      </div>
+    <section id="products" ref={sectionRef} className="bg-[#F9F7F0] py-20 md:py-28 px-6">
+      <div className="max-w-[1200px] mx-auto">
+        {/* Header */}
+        <div className="text-center mb-12 md:mb-16">
+          <span className="inline-block text-[#C23B22] text-xs font-semibold uppercase tracking-[0.15em]">
+            OUR PRODUCTS
+          </span>
+          <h2
+            className="text-[#1A2B47] font-semibold mt-3"
+            style={{ fontSize: 'clamp(1.5rem, 3vw, 2.5rem)' }}
+          >
+            Premium Construction Materials
+          </h2>
+          <p className="text-[rgba(26,43,71,0.6)] mt-3 text-base max-w-[520px] mx-auto">
+            Competitive prices, same-day delivery guaranteed
+          </p>
+        </div>
 
-      {/* Sticky Showcase */}
-      <div className="sticky top-0 h-[100dvh] overflow-hidden">
-        <div className="h-full flex items-center max-w-[1280px] mx-auto px-6">
-          {/* Left: Text Descriptions */}
-          <div className="w-[40%] pr-8 relative" style={{ minHeight: '200px' }}>
-            {products.map((product, index) => (
-              <div
-                key={product.name}
-                ref={(el) => { textItemsRef.current[index] = el; }}
-                className="text-item"
-              >
-                <h3 className="text-[#1A2B47] font-semibold text-xl">{product.name}</h3>
-                <p className="text-[rgba(26,43,71,0.7)] text-[15px] mt-3 max-w-[360px]">
-                  {product.description}
-                </p>
-                <span className="inline-block text-[#C23B22] font-bold text-[32px] mt-4">
-                  {product.price}
+        {/* Product Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+          {products.map((product) => (
+            <div
+              key={product.name}
+              className="product-card opacity-0 bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 group"
+            >
+              {/* Image */}
+              <div className="relative overflow-hidden">
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="w-full h-48 sm:h-52 object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <span className="absolute top-3 left-3 bg-[#1A2B47] text-white text-[11px] font-semibold uppercase tracking-[0.1em] px-3 py-1 rounded-full">
+                  {product.label}
                 </span>
               </div>
-            ))}
-          </div>
 
-          {/* Right: Horizontally Sliding Card */}
-          <div className="w-[60%] flex justify-center">
-            <div
-              ref={cardRef}
-              className="w-[380px] flex-shrink-0 will-change-transform"
-            >
-              <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-                {/* Dynamic image based on active product */}
-                {products.map((product, index) => (
-                  <div
-                    key={product.image}
-                    className="transition-opacity duration-500"
-                    style={{
-                      opacity: currentIndexRef.current === index ? 1 : 0,
-                      display: currentIndexRef.current === index ? 'block' : 'none',
-                    }}
+              {/* Content */}
+              <div className="p-5">
+                <h3 className="text-[#1A2B47] font-semibold text-lg">{product.name}</h3>
+                <p className="text-[rgba(26,43,71,0.6)] text-sm mt-2 leading-relaxed">
+                  {product.description}
+                </p>
+                <div className="flex items-center justify-between mt-4">
+                  <span className="text-[#C23B22] font-bold text-xl">{product.price}</span>
+                  <a
+                    href="tel:9964666749"
+                    className="bg-[#C23B22] hover:bg-[#F5A623] text-white hover:text-[#1A2B47] px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-wide transition-all duration-300"
                   >
-                    <img
-                      src={product.image}
-                      alt={product.name}
-                      className="w-full h-[400px] object-cover"
-                    />
-                  </div>
-                ))}
-                {/* Always show current product image */}
-                <img
-                  src={products[currentIndexRef.current]?.image || products[0].image}
-                  alt={products[currentIndexRef.current]?.name || products[0].name}
-                  className="w-full h-[400px] object-cover"
-                />
-                <div className="py-4 text-center">
-                  <span className="text-[#1A2B47] font-semibold text-[13px] uppercase tracking-[0.1em]">
-                    {products[currentIndexRef.current]?.label || products[0].label}
-                  </span>
+                    Order Now
+                  </a>
                 </div>
               </div>
             </div>
-          </div>
+          ))}
         </div>
       </div>
     </section>

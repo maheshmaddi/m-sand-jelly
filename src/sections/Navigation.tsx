@@ -50,9 +50,10 @@ export default function Navigation({ onNavigate }: NavigationProps) {
         {/* Logo */}
         <button
           onClick={() => onNavigate('hero')}
-          className="text-white font-semibold text-lg uppercase tracking-[0.12em]"
+          className="flex items-center gap-2"
         >
-          PRIMEBUILD
+          <img src="./images/logo.jpg" alt="PrimeBuild" className="h-10 w-10 rounded-full object-cover" />
+          <span className="text-white font-semibold text-lg uppercase tracking-[0.12em]">PRIMEBUILD</span>
         </button>
 
         {/* Links */}
