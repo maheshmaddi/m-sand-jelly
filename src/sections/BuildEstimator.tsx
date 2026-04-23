@@ -1,15 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
-
-interface BuildEstimatorProps {
-  onNavigate: (id: string) => void;
-}
-
-import ConcreteCalculator from '../calculators/ConcreteCalculator';
-import PlasteringCalculator from '../calculators/PlasteringCalculator';
-import BrickWorkCalculator from '../calculators/BrickWorkCalculator';
-import AreaVolumeCalculator from '../calculators/AreaVolumeCalculator';
-import CostEstimator from '../calculators/CostEstimator';
+import { useNavigate } from 'react-router';
 
 const tabs = [
   { id: 'concrete', label: 'Concrete Mix', icon: '🧱', desc: 'Slabs, foundations & columns' },
@@ -19,10 +10,9 @@ const tabs = [
   { id: 'cost', label: 'Cost Estimator', icon: '💰', desc: 'Material cost breakdown' },
 ];
 
-export default function BuildEstimator({ onNavigate }: BuildEstimatorProps) {
+export default function BuildEstimator() {
   const sectionRef = useRef<HTMLElement>(null);
-  const [activeTab, setActiveTab] = useState('concrete');
-  const [showCalculator, setShowCalculator] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -49,67 +39,6 @@ export default function BuildEstimator({ onNavigate }: BuildEstimatorProps) {
     return () => observer.disconnect();
   }, []);
 
-  // If calculator is open, show full calculator UI
-  if (showCalculator) {
-    return (
-      <section id="estimator" ref={sectionRef} className="bg-white py-16 px-4">
-        <div className="max-w-[900px] mx-auto">
-          <button
-            onClick={() => setShowCalculator(false)}
-            className="flex items-center gap-2 text-[#C23B22] hover:text-[#1A2B47] text-sm font-medium mb-6 transition-colors"
-          >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6" /></svg>
-            Back to Overview
-          </button>
-
-          <div className="text-center mb-8">
-            <h2 className="text-[#1A2B47] font-semibold" style={{ fontSize: 'clamp(1.3rem, 2.5vw, 1.8rem)' }}>
-              Material Estimator
-            </h2>
-            <p className="text-[rgba(26,43,71,0.5)] mt-1 text-sm">Estimate quantities and costs for your project</p>
-          </div>
-
-          {/* Tab Navigation */}
-          <div className="flex gap-2 overflow-x-auto pb-2 mb-6 -mx-1 px-1">
-            {tabs.map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition-all duration-200 ${
-                  activeTab === tab.id
-                    ? 'bg-[#C23B22] text-white shadow-md'
-                    : 'bg-[#F9F7F0] text-[#1A2B47] hover:bg-[#1A2B47] hover:text-white'
-                }`}
-              >
-                <span>{tab.icon}</span>
-                {tab.label}
-              </button>
-            ))}
-          </div>
-
-          {/* Calculator */}
-          <div className="bg-[#F9F7F0] rounded-2xl p-5 md:p-8">
-            {activeTab === 'concrete' && <ConcreteCalculator />}
-            {activeTab === 'plastering' && <PlasteringCalculator />}
-            {activeTab === 'brickwork' && <BrickWorkCalculator />}
-            {activeTab === 'area' && <AreaVolumeCalculator />}
-            {activeTab === 'cost' && <CostEstimator />}
-          </div>
-
-          <div className="text-center mt-6">
-            <a
-              href="tel:9964666749"
-              className="inline-flex items-center gap-2 bg-[#F5A623] hover:bg-[#C23B22] text-[#1A2B47] hover:text-white px-8 py-3 rounded-full font-semibold transition-all duration-300"
-            >
-              📞 Call Now for Exact Quote
-            </a>
-          </div>
-        </div>
-      </section>
-    );
-  }
-
-  // Overview cards
   return (
     <section id="estimator" ref={sectionRef} className="bg-white py-20 md:py-28 px-6">
       <div className="max-w-[1100px] mx-auto">
@@ -132,7 +61,7 @@ export default function BuildEstimator({ onNavigate }: BuildEstimatorProps) {
           {tabs.map((tab, i) => (
             <button
               key={tab.id}
-              onClick={() => { setActiveTab(tab.id); setShowCalculator(true); }}
+              onClick={() => navigate(`/estimator/${tab.id}`)}
               className={`est-animate opacity-0 text-left bg-[#F9F7F0] hover:bg-[#C23B22] rounded-xl p-5 group transition-all duration-300 hover:shadow-lg ${
                 i === 4 ? 'sm:col-span-2 lg:col-span-1' : ''
               }`}

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useCallback } from 'react';
+import { useNavigate } from 'react-router';
 import Lenis from '@studio-freight/lenis';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -17,6 +18,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function AppContent() {
   const lenisRef = useRef<Lenis | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const lenis = new Lenis({ lerp: 0.1, smoothWheel: true });
@@ -28,11 +30,15 @@ export default function AppContent() {
   }, []);
 
   const handleNavigate = useCallback((id: string) => {
+    if (id === 'estimator') {
+      navigate('/estimator/concrete');
+      return;
+    }
     const element = document.getElementById(id);
     if (element && lenisRef.current) {
       lenisRef.current.scrollTo(element, { offset: 0, duration: 1.2 });
     }
-  }, []);
+  }, [navigate]);
 
   return (
     <div className="relative">
@@ -42,7 +48,7 @@ export default function AppContent() {
       <Services />
       <Pricing />
       <WhyChooseUs />
-      <BuildEstimator onNavigate={handleNavigate} />
+      <BuildEstimator />
       <Contact />
       <Footer onNavigate={handleNavigate} />
     </div>
