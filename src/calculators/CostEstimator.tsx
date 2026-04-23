@@ -2,12 +2,11 @@ import { useState } from 'react';
 import { PRICES, formatNumber, InputField, ResultCard, WhatsAppQuoteButton } from './shared';
 
 const materials = [
-  { key: 'roboSand', label: 'Robo Sand Double Wash', price: PRICES.roboSand, unit: 'tons', desc: 'Premium double-washed M-Sand for concrete & plastering' },
-  { key: 'jelly20mm', label: 'Jelly 20mm', price: PRICES.jelly20mm, unit: 'tons', desc: '20mm crushed stone for RCC slabs and foundations' },
-  { key: 'jelly40mm', label: 'Jelly 40mm', price: PRICES.jelly40mm, unit: 'tons', desc: '40mm coarse aggregate for base layers and heavy work' },
-  { key: 'msandSingle', label: 'Single Wash M-Sand', price: PRICES.msandSingle, unit: 'tons', desc: 'Economy M-Sand for brickwork and block masonry' },
-  { key: 'airWashDust', label: 'Air Wash Dust', price: PRICES.airWashDust, unit: 'tons', desc: 'Fine dust for levelling, filling & base preparation' },
-  { key: 'cement', label: 'Cement (50kg bags)', price: PRICES.cement, unit: 'bags', desc: 'OPC 53 grade cement bags (price varies by brand)' },
+  { key: 'roboSand', label: 'Robo Sand Double Wash', price: 950, unit: 'tons', desc: 'Premium double-washed M-Sand for concrete & plastering' },
+  { key: 'jelly20mm', label: 'Jelly 20mm', price: 750, unit: 'tons', desc: '20mm crushed stone for RCC slabs and foundations' },
+  { key: 'jelly40mm', label: 'Jelly 40mm', price: 450, unit: 'tons', desc: '40mm coarse aggregate for base layers and heavy work' },
+  { key: 'msandSingle', label: 'Single Wash M-Sand', price: 750, unit: 'tons', desc: 'Economy M-Sand for brickwork and block masonry' },
+  { key: 'airWashDust', label: 'Air Wash Dust', price: 500, unit: 'tons', desc: 'Fine dust for levelling, filling & base preparation' },
 ];
 
 export default function CostEstimator() {
