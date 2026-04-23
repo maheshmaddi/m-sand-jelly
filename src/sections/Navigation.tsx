@@ -42,7 +42,7 @@ export default function Navigation({ onNavigate }: NavigationProps) {
   return (
     <nav
       ref={navRef}
-      className="fixed top-0 left-0 w-full z-[100] h-16 flex items-center transition-colors duration-400"
+      className="fixed top-0 left-0 w-full z-[100] transition-colors duration-400"
       style={{
         backgroundColor: scrolled ? '#1A2B47' : 'transparent',
         transition: 'background-color 0.4s ease',
@@ -95,7 +95,9 @@ export default function Navigation({ onNavigate }: NavigationProps) {
 
       {/* Mobile Menu */}
       {mobileOpen && (
-        <div className="md:hidden bg-[#1A2B47]/95 backdrop-blur-sm px-6 pb-6 pt-2">
+        <>
+          <div className="md:hidden fixed inset-0 top-16 bg-black/40 z-[-1]" onClick={() => setMobileOpen(false)} />
+          <div className="md:hidden absolute top-16 left-0 w-full bg-[#1A2B47] px-6 pb-6 pt-2 shadow-xl z-[101]">
           {navLinks.map((link) => (
             <button
               key={link.target}
@@ -112,6 +114,7 @@ export default function Navigation({ onNavigate }: NavigationProps) {
             Call Now
           </a>
         </div>
+        </>
       )}
     </nav>
   );
