@@ -20,7 +20,7 @@ export function formatNumber(n: number): string {
 }
 
 export function shareOnWhatsApp(text: string) {
-  const url = `https://wa.me/919960066749?text=${encodeURIComponent(text)}`;
+  const url = `https://wa.me/9199600666749?text=${encodeURIComponent(text)}`;
   window.open(url, '_blank');
 }
 

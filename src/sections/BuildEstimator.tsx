@@ -79,7 +79,7 @@ export default function BuildEstimator() {
         <div className="est-animate text-center mt-10 opacity-0">
           <p className="text-[rgba(26,43,71,0.5)] text-sm mb-3">Need help? We'll calculate for you!</p>
           <a
-            href="https://wa.me/919960066749?text=Hi%2C%20I%20need%20help%20estimating%20materials%20for%20my%20construction%20project"
+            href="https://wa.me/9199600666749?text=Hi%2C%20I%20need%20help%20estimating%20materials%20for%20my%20construction%20project"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-full font-semibold text-sm transition-all duration-300"
