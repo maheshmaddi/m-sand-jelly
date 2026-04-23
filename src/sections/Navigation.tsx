@@ -8,7 +8,7 @@ interface NavigationProps {
 export default function Navigation({ onNavigate }: NavigationProps) {
   const navRef = useRef<HTMLElement>(null);
   const linksRef = useRef<HTMLDivElement>(null);
-  const [scrolled, setScrolled] = useState(false);
+  const [scrolled, setScrolled] = useState(window.location.pathname.startsWith('/estimator'));
   const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
