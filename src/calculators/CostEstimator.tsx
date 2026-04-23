@@ -1,13 +1,13 @@
 import { useState } from 'react';
-import { PRICES, formatNumber, InputField, ResultCard } from './shared';
+import { PRICES, formatNumber, InputField, ResultCard, WhatsAppQuoteButton } from './shared';
 
 const materials = [
-  { key: 'roboSand', label: 'Robo Sand Double Wash', price: PRICES.roboSand, unit: 'tons' },
-  { key: 'jelly20mm', label: 'Jelly 20mm', price: PRICES.jelly20mm, unit: 'tons' },
-  { key: 'jelly40mm', label: 'Jelly 40mm', price: PRICES.jelly40mm, unit: 'tons' },
-  { key: 'msandSingle', label: 'Single Wash M-Sand', price: PRICES.msandSingle, unit: 'tons' },
-  { key: 'airWashDust', label: 'Air Wash Dust', price: PRICES.airWashDust, unit: 'tons' },
-  { key: 'cement', label: 'Cement (50kg bags)', price: PRICES.cement, unit: 'bags' },
+  { key: 'roboSand', label: 'Robo Sand Double Wash', price: PRICES.roboSand, unit: 'tons', desc: 'Premium double-washed M-Sand for concrete & plastering' },
+  { key: 'jelly20mm', label: 'Jelly 20mm', price: PRICES.jelly20mm, unit: 'tons', desc: '20mm crushed stone for RCC slabs and foundations' },
+  { key: 'jelly40mm', label: 'Jelly 40mm', price: PRICES.jelly40mm, unit: 'tons', desc: '40mm coarse aggregate for base layers and heavy work' },
+  { key: 'msandSingle', label: 'Single Wash M-Sand', price: PRICES.msandSingle, unit: 'tons', desc: 'Economy M-Sand for brickwork and block masonry' },
+  { key: 'airWashDust', label: 'Air Wash Dust', price: PRICES.airWashDust, unit: 'tons', desc: 'Fine dust for levelling, filling & base preparation' },
+  { key: 'cement', label: 'Cement (50kg bags)', price: PRICES.cement, unit: 'bags', desc: 'OPC 53 grade cement bags (price varies by brand)' },
 ];
 
 export default function CostEstimator() {
@@ -30,23 +30,28 @@ export default function CostEstimator() {
     setQuantities((prev) => ({ ...prev, [key]: value }));
   };
 
+  const whatsappMsg = results
+    ? `Hi, I'd like to order:\n\n${results.items.map((i) => `${i.label}: ${formatNumber(i.qty)} — ₹${formatNumber(i.cost)}`).join('\n')}\n\nTotal: ₹${formatNumber(results.total)}\n\nPlease confirm availability and delivery.`
+    : '';
+
   return (
     <div>
       <h2 className="text-xl font-bold text-[#1A2B47] mb-1">Material Cost Estimator</h2>
-      <p className="text-sm text-[rgba(26,43,71,0.5)] mb-6">Get an instant cost estimate based on your material requirements</p>
+      <p className="text-sm text-[rgba(26,43,71,0.5)] mb-6">
+        Enter quantities for each material to get an instant cost estimate with our current prices.
+      </p>
 
-      <div className="space-y-3 mb-4">
+      <div className="space-y-4 mb-4">
         {materials.map((m) => (
-          <div key={m.key} className="flex items-center gap-3">
-            <div className="flex-1">
-              <InputField
-                label={`${m.label} (₹${m.price}/${m.unit === 'bags' ? 'bag' : 'ton'})`}
-                value={quantities[m.key] || ''}
-                onChange={(v) => updateQty(m.key, v)}
-                unit={m.unit}
-                placeholder="0"
-              />
-            </div>
+          <div key={m.key}>
+            <InputField
+              label={`${m.label} — ₹${m.price}/${m.unit === 'bags' ? 'bag' : 'ton'}`}
+              value={quantities[m.key] || ''}
+              onChange={(v) => updateQty(m.key, v)}
+              unit={m.unit}
+              placeholder="0"
+              helpText={m.desc}
+            />
           </div>
         ))}
       </div>
@@ -73,8 +78,9 @@ export default function CostEstimator() {
           </div>
           <ResultCard label="Estimated Total" value={`₹${formatNumber(results.total)}`} highlight />
           <p className="text-xs text-[rgba(26,43,71,0.4)] mt-3 text-center">
-            * Prices are approximate. Contact us for exact quotes and delivery charges.
+            * Prices are approximate. Delivery charges may apply based on location.
           </p>
+          <WhatsAppQuoteButton message={whatsappMsg} />
         </div>
       )}
     </div>

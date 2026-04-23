@@ -168,12 +168,6 @@ export default function Hero({ onNavigate }: HeroProps) {
           >
             VIEW PRODUCTS
           </button>
-          <button
-            onClick={() => onNavigate('calculators')}
-            className="bg-[#F5A623] hover:bg-[#C23B22] text-[#1A2B47] hover:text-white px-8 py-3.5 rounded text-sm font-semibold uppercase tracking-[0.08em] transition-all duration-300"
-          >
-            📐 CALCULATORS
-          </button>
           <a
             href="tel:9964666749"
             className="border border-white/40 hover:border-white hover:bg-white/10 text-white px-8 py-3.5 rounded text-sm font-semibold uppercase tracking-[0.08em] transition-all duration-300"

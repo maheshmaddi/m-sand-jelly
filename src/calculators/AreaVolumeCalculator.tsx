@@ -1,15 +1,12 @@
 import { useState } from 'react';
-import { formatNumber, InputField, ResultCard } from './shared';
+import { formatNumber, InputField, ResultCard, WhatsAppQuoteButton } from './shared';
 
 export default function AreaVolumeCalculator() {
   const [length, setLength] = useState('');
   const [width, setWidth] = useState('');
   const [depth, setDepth] = useState('');
   const [results, setResults] = useState<null | {
-    areaSqft: number;
-    areaSqm: number;
-    volCft: number;
-    volCum: number;
+    areaSqft: number; areaSqm: number; volCft: number; volCum: number;
   }>(null);
 
   const calculate = () => {
@@ -20,26 +17,36 @@ export default function AreaVolumeCalculator() {
 
     const areaSqft = l * w;
     const areaSqm = areaSqft * 0.0929;
-
-    let volCft = 0;
-    let volCum = 0;
-    if (d) {
-      volCft = l * w * d;
-      volCum = volCft * 0.0283;
-    }
+    let volCft = 0, volCum = 0;
+    if (d) { volCft = l * w * d; volCum = volCft * 0.0283; }
 
     setResults({ areaSqft, areaSqm, volCft, volCum });
   };
 
+  const whatsappMsg = results
+    ? `Hi, I calculated my plot/room dimensions:\n\n📐 Area: ${formatNumber(results.areaSqft)} sq ft (${formatNumber(results.areaSqm)} sq m)${results.volCft > 0 ? `\n📦 Volume: ${formatNumber(results.volCft)} cft (${formatNumber(results.volCum)} cum)` : ''}\n\nCan you help me estimate materials for this?`
+    : '';
+
   return (
     <div>
       <h2 className="text-xl font-bold text-[#1A2B47] mb-1">Area & Volume Calculator</h2>
-      <p className="text-sm text-[rgba(26,43,71,0.5)] mb-6">Quick area and volume calculations with unit conversion</p>
+      <p className="text-sm text-[rgba(26,43,71,0.5)] mb-6">
+        Quickly convert between sq ft ↔ sq m and cubic ft ↔ cubic m. Useful for reading construction plans.
+      </p>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
-        <InputField label="Length" value={length} onChange={setLength} unit="ft" placeholder="e.g. 40" />
-        <InputField label="Width" value={width} onChange={setWidth} unit="ft" placeholder="e.g. 30" />
-        <InputField label="Depth (optional)" value={depth} onChange={setDepth} unit="ft" placeholder="e.g. 0.5" step="0.1" />
+        <InputField
+          label="Length" value={length} onChange={setLength} unit="ft" placeholder="e.g. 40"
+          helpText="Length of the plot, room, or slab"
+        />
+        <InputField
+          label="Width" value={width} onChange={setWidth} unit="ft" placeholder="e.g. 30"
+          helpText="Width or breadth of the area"
+        />
+        <InputField
+          label="Depth (optional)" value={depth} onChange={setDepth} unit="ft" placeholder="e.g. 0.5" step="0.1"
+          helpText="Fill this only if you need volume. Leave empty for area-only calculation"
+        />
       </div>
 
       <button
@@ -67,6 +74,7 @@ export default function AreaVolumeCalculator() {
               </div>
             </div>
           )}
+          <WhatsAppQuoteButton message={whatsappMsg} />
         </div>
       )}
     </div>
